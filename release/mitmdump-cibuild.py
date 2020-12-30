@@ -134,8 +134,6 @@ class BuildEnviron:
         ret = {
             "mitmproxy": ["mitmdump"]
         }
-        if self.system == "Windows":
-            ret["mitmproxy"].remove("mitmproxy")
         return ret
 
     @property
