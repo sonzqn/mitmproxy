@@ -3,6 +3,7 @@ import base64
 import typing
 import tempfile
 
+
 from datetime import datetime
 from datetime import timezone
 import dateutil.parser
@@ -40,6 +41,7 @@ class HarCaptureTypes(Enum):
     RESPONSE_COOKIES = auto()
     RESPONSE_CONTENT = auto()
     RESPONSE_BINARY_CONTENT = auto()
+    WEBSOCKET_MESSAGES = auto()
 
     REQUEST_CAPTURE_TYPES = {
         REQUEST_HEADERS,
@@ -543,7 +545,7 @@ class HarDumpAddOn:
     def get_full_url(self, request):
         host_port = request.host
         if request.method == 'CONNECT':
-            if request.port is not 443:
+            if request.port != 443:
                 host_port = host_port + ':' + str(request.port)
             host_port = 'https://' + host_port
         else:
@@ -637,6 +639,32 @@ class HarDumpAddOn:
             "text": flow.request.get_text(strict=False),
             "params": params
         }
+
+    def capture_websocket_message(self, flow):
+        har_entry = self.get_har_entry(flow.handshake_flow)
+        msg = flow.messages[-1]
+        har_entry.setdefault("_webSocketMessages", []).append({
+            "type": 'send' if msg.from_client else 'receive',
+            "opcode": msg.type.value,
+            "data": msg.content,
+            "time": msg.timestamp
+            })
+
+    # Capture errors as messages like Chrome har export does
+    def capture_websocket_error(self, flow):
+        har_entry = self.get_har_entry(flow.handshake_flow)
+        har_entry.setdefault("_webSocketMessages", []).append({
+            "type": 'error',
+            "time": flow.error.timestamp,
+            "opcode": -1,
+            "data": flow.error.msg
+        })
+
+    def websocket_message(self, flow):
+        self.capture_websocket_message(flow)
+
+    def websocket_error(self, flow):
+        self.capture_websocket_error(flow)
 
     def response(self, flow):
         har_entry = self.get_har_entry(flow)
