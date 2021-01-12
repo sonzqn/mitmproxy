@@ -192,11 +192,11 @@ class Options(optmanager.OptManager):
             """
         )
         self.add_option(
-            "connection_idle_seconds", int, False,
+            "connection_idle_seconds", int, -1,
             ""
         )
         self.add_option(
-            "dns_resolving_delay_ms", int, False,
+            "dns_resolving_delay_ms", int, 0,
             ""
         )
         self.add_option(

@@ -7,8 +7,6 @@ import threading
 import time
 import traceback
 
-from mitmproxy import ctx
-
 from typing import Optional  # noqa
 
 from mitmproxy.net import tls
@@ -361,7 +359,7 @@ class ConnectionCloser:
 
 class TCPClient(_Connection):
 
-    def __init__(self, address, source_address=None, spoof_source_address=None):
+    def __init__(self, address, source_address=None, spoof_source_address=None, connection_idle_seconds=-1, dns_resolving_delay_ms=0, channel=None):
         super().__init__(None)
         self.address = address
         self.source_address = source_address
@@ -369,6 +367,9 @@ class TCPClient(_Connection):
         self.server_certs = []
         self.sni = None
         self.spoof_source_address = spoof_source_address
+        self.connection_idle_seconds = connection_idle_seconds
+        self.dns_resolving_delay_ms = dns_resolving_delay_ms
+        self.channel = channel
 
     @property
     def ssl_verification_error(self) -> Optional[exceptions.InvalidCertificateException]:
@@ -396,12 +397,13 @@ class TCPClient(_Connection):
             self.connection.set_tlsext_host_name(sni.encode("idna"))
         self.connection.set_connect_state()
         try:
-            idle_timeout = ctx.options.connection_idle_seconds
+            idle_timeout = self.connection_idle_seconds
             if idle_timeout != -1:
                 timeout = idle_timeout
             else:
                 timeout = 60
-            self.channel.ask("ssl_handshake_started", self)
+            if self.channel is not None:
+                self.channel.ask("ssl_handshake_started", self)
             TimeoutHelper.wrap_with_timeout(self.connection.do_handshake, timeout)
         except SSL.Error as v:
             if self.ssl_verification_error:
@@ -409,7 +411,8 @@ class TCPClient(_Connection):
             else:
                 raise exceptions.TlsException("SSL handshake error: %s" % repr(v))
         finally:
-            self.channel.ask("ssl_handshake_finished", self)
+            if self.channel is not None:
+                self.channel.ask("ssl_handshake_finished", self)
 
         self.cert = certs.Cert(self.connection.get_peer_certificate())
 
@@ -430,7 +433,7 @@ class TCPClient(_Connection):
         # https://github.com/python/cpython/blob/3cc5817cfaf5663645f4ee447eaed603d2ad290a/Lib/socket.py
 
         err = None
-        idle_timeout = ctx.options.connection_idle_seconds
+        idle_timeout = self.connection_idle_seconds
         if idle_timeout != -1:
             timeout = idle_timeout
         for res in socket.getaddrinfo(self.address[0], self.address[1], 0, socket.SOCK_STREAM):
@@ -467,19 +470,21 @@ class TCPClient(_Connection):
         else:
             raise socket.error("getaddrinfo returns an empty list")  # pragma: no cover
 
-    def connect(self, flow):
+    def connect(self, flow=None):
         try:
-            self.channel.ask("tcp_resolving_server_address_started", flow)
+            if self.channel is not None:
+                self.channel.ask("tcp_resolving_server_address_started", flow)
             connection = self.create_connection()
-            if ctx.options.dns_resolving_delay_ms > 0:
-                time.sleep(ctx.options.dns_resolving_delay_ms / 1000)
+            if self.dns_resolving_delay_ms > 0:
+                time.sleep(self.dns_resolving_delay_ms / 1000)
         except (socket.error, IOError) as err:
             raise exceptions.TcpException(
                 'Error connecting to "%s": %s' %
                 (self.address[0], err)
             ) from err
         finally:
-            self.channel.ask("tcp_resolving_server_address_finished", flow)
+            if self.channel is not None:
+                self.channel.ask("tcp_resolving_server_address_finished", flow)
         self.connection = connection
         self.source_address = connection.getsockname()
         self.ip_address = connection.getpeername()

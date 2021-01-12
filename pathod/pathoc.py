@@ -297,7 +297,7 @@ class Pathoc(tcp.TCPClient):
         except (socks.SocksError, exceptions.TcpDisconnect) as e:
             raise PathocError(str(e))
 
-    def connect(self, connect_to=None, showssl=False, fp=sys.stdout):
+    def connect(self, flow=None, connect_to=None, showssl=False, fp=sys.stdout):
         """
             connect_to: A (host, port) tuple, which will be connected to with
             an HTTP CONNECT request.

@@ -134,7 +134,9 @@ class ServerConnectionMixin:
                 address=server_address,
                 source_address=(self.config.options.upstream_bind_address, 0),
                 spoof_source_address=self.config.options.spoof_source_address,
-                channel=self.ctx.channel
+                channel=self.ctx.channel,
+                connection_idle_seconds=self.ctx.config.options.connection_idle_seconds,
+                dns_resolving_delay_ms=self.ctx.config.options.dns_resolving_delay_ms
             )
 
     def set_server(self, address):
@@ -171,7 +173,11 @@ class ServerConnectionMixin:
         if not self.server_conn.address:
             raise exceptions.ProtocolException("Cannot connect to server, no server address given.")
         try:
-            flow = self.ctx.get_root_ctx().flow
+            root_ctx = self.ctx.get_root_ctx()
+            if hasattr(root_ctx, 'flow'):
+                flow = root_ctx.flow
+            else:
+                flow = None
             self.server_conn.connect(flow)
             self.log("serverconnect", "debug", [repr(self.server_conn.address)])
             self.channel.ask("serverconnect", self.server_conn)
