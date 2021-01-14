@@ -472,7 +472,7 @@ class TCPClient(_Connection):
 
     def connect(self, flow=None):
         try:
-            if self.channel is not None:
+            if self.channel is not None and flow is not None:
                 self.channel.ask("tcp_resolving_server_address_started", flow)
             connection = self.create_connection()
             if self.dns_resolving_delay_ms > 0:
@@ -483,7 +483,7 @@ class TCPClient(_Connection):
                 (self.address[0], err)
             ) from err
         finally:
-            if self.channel is not None:
+            if self.channel is not None and flow is not None:
                 self.channel.ask("tcp_resolving_server_address_finished", flow)
         self.connection = connection
         self.source_address = connection.getsockname()

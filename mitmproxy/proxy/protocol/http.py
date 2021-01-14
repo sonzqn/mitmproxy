@@ -203,7 +203,8 @@ class HttpLayer(base.Layer):
             )
             root_ctx = self.get_root_ctx()
             if hasattr(root_ctx, "flow"):
-                flow.metadata = root_ctx.flow.metadata
+                flow.metadata['WhiteListFiltered'] = root_ctx.flow.metadata.pop('WhiteListFiltered', None)
+                flow.metadata['BlackListFiltered'] = root_ctx.flow.metadata.pop('BlackListFiltered', None)
             setattr(self.get_root_ctx(), "flow", flow)
             if not self._process_flow(flow):
                 return
