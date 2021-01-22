@@ -17,8 +17,11 @@ def get_dev_version() -> str:
     """
 
     mitmproxy_version = VERSION
+    print("get_dev_version call")
 
     here = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+    print("here value: " + str(here))
     try:
         # Check that we're in the mitmproxy repository: https://github.com/mitmproxy/mitmproxy/issues/3987
         # cb0e3287090786fad566feb67ac07b8ef361b2c3 is the first mitmproxy commit.
@@ -33,15 +36,21 @@ def get_dev_version() -> str:
             stderr=subprocess.STDOUT,
             cwd=here,
         )
+        print("subprocess.check_output: " + git_describe)
         last_tag, tag_dist_str, commit = git_describe.decode().strip().rsplit("-", 2)
         commit = commit.lstrip("g")[:7]
         tag_dist = int(tag_dist_str)
-    except Exception:
+    except Exception as e:
+        print("get_dev_version exception: ")
+        print(e)
         pass
     else:
+        print("tag_dist = " + str(tag_dist))
         # Add commit info for non-tagged releases
         if tag_dist > 0:
             mitmproxy_version += f" (+{tag_dist}, commit {commit})"
+        else:
+            print("tag_dist == 0")
 
     # PyInstaller build indicator, if using precompiled binary
     if getattr(sys, 'frozen', False):
