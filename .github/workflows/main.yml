@@ -5,18 +5,7 @@ on: [ push, pull_request ]
 permissions:
   contents: read
 
-jobs:
-  lint-pr:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          path: mitmproxy
-      - uses: TrueBrain/actions-flake8@9a43ff1b2c7b96f3edffc48a49973ce3de116ba1
-        # mirrored at https://github.com/mitmproxy/mitmproxy/settings/actions
-        
+jobs:        
   lint-local:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
