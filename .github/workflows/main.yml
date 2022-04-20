@@ -133,7 +133,6 @@ jobs:
 
   # Separate from everything else because slow.
   build-and-deploy-docker:
-    if: startsWith(github.ref, 'refs/tags/')
     environment: deploy-docker
     needs:
      - test
@@ -171,14 +170,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: binaries.linux
-          path: release/dist
-      - uses: actions/download-artifact@v2
-        with:
-          name: binaries.macos
-          path: release/dist
-      - uses: actions/download-artifact@v2
-        with:
-          name: binaries.windows
           path: release/dist
       - uses: jakejarvis/s3-sync-action@master
         with:
