@@ -189,7 +189,7 @@ jobs:
     env:
       CI_BUILD_DOCKER: 1
       DOCKER_USERNAME: mitmbot
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_PASSWORD: 111111
     steps:
       - uses: actions/checkout@v2
         with:
