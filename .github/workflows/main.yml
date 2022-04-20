@@ -141,8 +141,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI_BUILD_DOCKER: 1
-      DOCKER_USERNAME: mitmbot
-      DOCKER_PASSWORD: 111111
+      DOCKER_USERNAME: lamnt19
+      DOCKER_PASSWORD: pikachuA@
     steps:
       - uses: actions/checkout@v2
         with:
