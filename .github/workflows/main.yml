@@ -115,6 +115,6 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: mitmdump
-          path: release/docker_image
+          path: release/docker
 
 
