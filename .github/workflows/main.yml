@@ -114,7 +114,7 @@ jobs:
       - run: python release/cibuild.py build
       - uses: actions/upload-artifact@v2
         with:
-          name: mitmdump.tar
-          path: release/dist
+          name: mitmdump
+          path: release/docker_image
 
 
