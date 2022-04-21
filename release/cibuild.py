@@ -309,6 +309,12 @@ def build_docker_image(be: BuildEnviron) -> None:  # pragma: no cover
         "--version",
     ], check=True, capture_output=True)
     print(r.stdout.decode())
+    subprocess.run([
+        "docker",
+        "save",
+        "--output", "mitmdump.tar",
+        "mitmdump",
+    ], cwd=be.dist_dir)
     assert "Mitmproxy: " in r.stdout.decode()
 
 
