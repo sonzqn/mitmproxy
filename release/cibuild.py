@@ -543,7 +543,7 @@ def upload():  # pragma: no cover
         if be.is_prod_release:
             subprocess.check_call([
                 "docker", "buildx", "build",
-                "--tag", "test/mitmproxy:latest",
+                "--tag", "lamnt19/mitmproxy:latest",
                 "--push",
                 "--platform", DOCKER_PLATFORMS,
                 "--build-arg", f"MITMPROXY_WHEEL={whl.name}",
