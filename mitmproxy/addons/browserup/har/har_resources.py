@@ -1,13 +1,18 @@
-from pathlib import Path
-import os
 import glob
+import hashlib
 import json
-import falcon
-from mitmproxy.addons.browserup.har.har_verifications import HarVerifications
-from mitmproxy.addons.browserup.har.har_capture_types import HarCaptureTypes
+import os
+import re
+from pathlib import Path
 
-from mitmproxy.addons.browserup.har.har_schemas import ErrorSchema, CounterSchema, MatchCriteriaSchema
+import falcon
 from marshmallow import ValidationError
+
+from mitmproxy import ctx
+from mitmproxy.addons.browserup.browserup_intercept import MyStubs
+from mitmproxy.addons.browserup.har.har_capture_types import HarCaptureTypes
+from mitmproxy.addons.browserup.har.har_schemas import ErrorSchema, CounterSchema, MatchCriteriaSchema
+from mitmproxy.addons.browserup.har.har_verifications import HarVerifications
 
 
 class HealthCheckResource:
@@ -61,7 +66,8 @@ class NoEntriesResponseMixin:
     def respond_with_no_entries_error(self, resp, bool):
         resp.status = falcon.HTTP_500
         resp.content_type = falcon.MEDIA_JSON
-        resp.body = json.dumps({"error": 'No traffic entries are present! Is the proxy setup correctly?', }, ensure_ascii=False)
+        resp.body = json.dumps({"error": 'No traffic entries are present! Is the proxy setup correctly?', },
+                               ensure_ascii=False)
 
 
 class HarResource(RespondWithHarMixin):
@@ -194,7 +200,6 @@ class HarCaptureTypesResource():
         """
         capture_types = req.get_param('captureTypes')
         capture_types = capture_types.strip("[]").split(",")
-
         capture_types_parsed = []
         for ct in capture_types:
             ct = ct.strip(" ")
@@ -531,3 +536,99 @@ class ErrorResource():
             resp.body = json.dumps({'error': err.messages}, ensure_ascii=False)
         else:
             resp.status = falcon.HTTP_204
+
+
+class InterceptResource:
+    def __init__(self):
+        self.name = "interception"
+
+    def addon_path(self):
+        return "intercept"
+
+    def on_put(self, req, resp):
+        """Sets intercept info
+        ---
+        description: Sets the intercept matcher & behavior
+        operationId: setIntercept
+        tags:
+            - BrowserUpProxy
+        responses:
+            200:
+        """
+        request_body = req.media
+        name = request_body.get("name", None)
+        predicate = request_body.get("predicate", None)
+        response = request_body.get('response', None)
+
+        # ctx.log.error(json.dumps(predicate))
+        # ctx.log.error(json.dumps(response))
+        errors = []
+        if name is None:
+            errors.append("'name' is required")
+        if predicate is None:
+            errors.append("'predicate' is required")
+        else:
+            if type(predicate) is dict:
+                method = predicate.get("method", None)
+                url = predicate.get("url", None)
+                headers = predicate.get("headers", None)
+                params = predicate.get("params", None)
+                body = predicate.get("body", None)
+                if method is None and url is None and headers is None and params is None and body is None:
+                    errors.append(
+                        "predicates need at least one of ['method', 'url', 'headers', 'params', 'body'] matcher")
+                predicate_keys = ["method", "url", "headers", "params", "body"]
+                for key in predicate:
+                    if key not in predicate_keys:
+                        errors.append(
+                            "'{}' key is not support, please use one of ['method', 'url', 'headers', 'params', 'body'] key".format(
+                                key))
+            else:
+                errors.append("predicate must be a dictionary")
+
+        if response is None:
+            errors.append("'response' is required")
+        else:
+            if type(response) is dict:
+                action = response.get("action", None)
+                status_code = response.get("status_code", None)
+                body = response.get("body", None)
+                if body or action:
+                    if action is None:
+                        errors.append("action is required, please use one of ['STUB', 'PATCH', 'REPLACE'] value")
+                    elif action and action.upper() == "STUB":
+                        if status_code is None or body is None:
+                            errors.append("response with action 'STUB' require ['status_code', 'body'] modifier")
+                    elif action and action.upper() == "PATCH":
+                        if body is None or type(body) is not dict:
+                            errors.append("response with action 'PATCH' must contain body type dictionary")
+                    elif action and action.upper() == "REPLACE":
+                        if body is None:
+                            errors.append("response with action 'REPLACE' must contain body")
+                    else:
+                        errors.append(
+                            "action '{}' is not support, please use one of ['STUB', 'PATCH', 'REPLACE'] value".format(
+                                action))
+                elif status_code is None:
+                    errors.append("response require at least ['status_code'] modifier")
+
+                response_keys = ["action", "status_code", "body"]
+                for key in response:
+                    if key not in response_keys:
+                        errors.append(
+                            "'{}' key is not support, please use one of ['action', 'status_code', 'body'] key".format(
+                                key))
+
+            else:
+                errors.append("response must be a dictionary")
+
+        if len(errors) > 0:
+            resp.status = falcon.HTTP_422
+            resp.content_type = falcon.MEDIA_JSON
+            resp.body = json.dumps({"error": errors}, ensure_ascii=False)
+        else:
+            intercept_key = hashlib.md5(name.encode("utf8"))
+            MyStubs.intercepts[intercept_key.hexdigest()] = {"name": name, "predicate": predicate, "response": response}
+            resp.status = falcon.HTTP_200
+            resp.content_type = falcon.MEDIA_JSON
+            resp.body = json.dumps(MyStubs.intercepts, ensure_ascii=False)
