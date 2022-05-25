@@ -2,13 +2,11 @@ import glob
 import hashlib
 import json
 import os
-import re
 from pathlib import Path
 
 import falcon
 from marshmallow import ValidationError
 
-from mitmproxy import ctx
 from mitmproxy.addons.browserup.browserup_intercept import MyStubs
 from mitmproxy.addons.browserup.har.har_capture_types import HarCaptureTypes
 from mitmproxy.addons.browserup.har.har_schemas import ErrorSchema, CounterSchema, MatchCriteriaSchema
