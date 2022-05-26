@@ -52,8 +52,6 @@ class ZipFile2(zipfile.ZipFile):
 @dataclass(frozen=True, repr=False)
 class BuildEnviron:
     PLATFORM_TAGS = {
-        "Darwin": "osx",
-        "Windows": "windows",
         "Linux": "linux",
     }
 
@@ -93,10 +91,10 @@ class BuildEnviron:
             branch=branch,
             tag=tag,
             is_pull_request=is_pull_request,
-            should_build_wheel=bool_from_env("CI_BUILD_WHEEL"),
-            should_build_pyinstaller=bool_from_env("CI_BUILD_PYINSTALLER"),
+            should_build_wheel=True,
+            should_build_pyinstaller=True,
             should_build_wininstaller=bool_from_env("CI_BUILD_WININSTALLER"),
-            should_build_docker=bool_from_env("CI_BUILD_DOCKER"),
+            should_build_docker=True,
             has_aws_creds=bool_from_env("AWS_ACCESS_KEY_ID"),
             has_twine_creds=bool_from_env("TWINE_USERNAME") and bool_from_env("TWINE_PASSWORD"),
             docker_username=os.environ.get("DOCKER_USERNAME", None),
@@ -244,18 +242,7 @@ class BuildEnviron:
 
     @property
     def version(self) -> str:
-        if self.tag:
-            if self.tag.startswith("v"):
-                try:
-                    parver.Version.parse(self.tag[1:], strict=True)
-                except parver.ParseError:
-                    return self.tag
-                return self.tag[1:]
-            return self.tag
-        elif self.branch:
-            return self.branch
-        else:
-            raise BuildError("We're on neither a tag nor a branch - could not establish version")
+        return "8.0.0"
 
 
 def build_wheel(be: BuildEnviron) -> None:  # pragma: no cover
@@ -309,12 +296,6 @@ def build_docker_image(be: BuildEnviron) -> None:  # pragma: no cover
         "--version",
     ], check=True, capture_output=True)
     print(r.stdout.decode())
-    subprocess.run([
-        "docker",
-        "save",
-        "--output", "mitmdump.tar",
-        "mitmdump",
-    ], cwd=docker_build_dir)
     assert "Mitmproxy: " in r.stdout.decode()
 
 

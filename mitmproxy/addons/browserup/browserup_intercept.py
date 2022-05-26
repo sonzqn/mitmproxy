@@ -1,4 +1,5 @@
 """Intercept HTTP request"""
+import copy
 import json
 import re
 
@@ -17,7 +18,7 @@ class MyStubs:
             intercept_response = intercept.get("response")
             if intercept_response:
                 if intercept_response.get("action").upper() == "STUB":
-                    ctx.log.error("process stub response")
+                    ctx.log.info("============ Process stub response ============")
                     flow.response = http.Response.make(
                         intercept_response.get("status_code"),  # (optional) status code
                         intercept_response.get("body").encode('utf-8'),  # (optional) content
@@ -32,9 +33,10 @@ class MyStubs:
             intercept = MyStubs.intercepts.get(intercept_key)
             intercept_response = intercept.get("response")
             if intercept_response:
-                ctx.log.error("process modify response")
+                ctx.log.info("============ Process modify response ============")
                 status_code = intercept_response.get("status_code", None)
                 if status_code:
+                    ctx.log.info("Change status code from {} to {}".format(flow.response.status_code, status_code))
                     flow.response.status_code = status_code
                 body = intercept_response.get("body", None)
                 if body:
@@ -42,13 +44,26 @@ class MyStubs:
                         try:
                             src = json.loads(flow.response.content)
                             if type(src) is dict:
-                                patch = json.loads(body)
+                                patch = copy.deepcopy(body)
                                 MyStubs.patch_json_object(src, patch)
+                                ctx.log.info("@Original response content:")
+                                ctx.log.info(flow.response.content)
                                 flow.response.content = json.dumps(patch).encode('utf-8')
+                                ctx.log.info("@Patched response content:")
+                                ctx.log.info(flow.response.content)
                         except ValueError as err:
                             ctx.log.error(err)
                     else:
-                        flow.response.content = body.encode('utf-8')
+                        ctx.log.error(type(body))
+                        ctx.log.error(body)
+                        if type(body) is dict:
+                            ctx.log.info("@Original response content:")
+                            ctx.log.info(flow.response.content)
+                            flow.response.content = json.dumps(body).encode('utf-8')
+                            ctx.log.info("@Replaced response content:")
+                            ctx.log.error(flow.response.content)
+                        else:
+                            flow.response.content = body.encode('utf-8')
 
     @staticmethod
     def get_intercept(flow):
@@ -57,6 +72,7 @@ class MyStubs:
             # ctx.log.error(json.dumps(intercept))
             predicate = intercept["predicate"]
             if MyStubs.is_match(flow, predicate):
+                ctx.log.info("Found matched intercept with name: {}".format(predicate.get("name")))
                 return {
                     "key": key,
                     "response": intercept["response"]
@@ -107,7 +123,8 @@ class MyStubs:
         for key in src:
             src_value = src.get(key)
             patch_value = patch.get(key, None)
-            ctx.log.error("The key and value are ({}) = ({}) | type: {}".format(key, src_value, type(src_value)))
+            # ctx.log.error("The key and value are ({}) = ({}) | type: {}".format(key, src_value, type(src_value)))
+            # ctx.log.error("Path value: {}".format(patch_value))
             if patch_value is None:
                 patch[key] = src_value
             elif type(patch_value) is type(src_value) and type(patch_value) is dict:
