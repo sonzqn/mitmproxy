@@ -465,13 +465,21 @@ def build():  # pragma: no cover
 
     if be.should_build_wheel:
         build_wheel(be)
-    if be.should_build_docker:
-        build_docker_image(be)
     if be.should_build_pyinstaller:
         build_pyinstaller(be)
     if be.should_build_wininstaller:
         build_wininstaller(be)
 
+
+@cli.command("build_image")
+def build_image():  # pragma: no cover
+    """
+        Build a binary distribution
+    """
+    be = BuildEnviron.from_env()
+    be.check_version()
+    if be.should_build_docker:
+        build_docker_image(be)
 
 @cli.command("upload")
 def upload():  # pragma: no cover

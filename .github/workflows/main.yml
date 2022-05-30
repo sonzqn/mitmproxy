@@ -6,16 +6,6 @@ permissions:
   contents: read
 
 jobs:
-  lint-pr:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          path: mitmproxy
-      - uses: TrueBrain/actions-flake8@9a43ff1b2c7b96f3edffc48a49973ce3de116ba1
-        # mirrored at https://github.com/mitmproxy/mitmproxy/settings/actions
   lint-local:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -28,42 +18,14 @@ jobs:
           python-version: '3.9'
       - run: pip install tox
       - run: tox -e flake8
-  mypy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - run: pip install tox
-      - run: tox -e mypy
 
-  #  individual-coverage:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - uses: actions/checkout@v2
-  #        with:
-  #          persist-credentials: false
-  #          fetch-depth: 0
-  #      - uses: actions/setup-python@v2
-  #        with:
-  #          python-version: '3.9'
-  #      - run: pip install tox
-  #      - run: tox -e individual_coverage
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image: ubuntu-18.04  # Old Ubuntu version for old glibc
-            platform: linux
-    runs-on: ${{ matrix.image }}
+    runs-on: ubuntu-18.04
     env:
-      CI_BUILD_WHEEL: ${{ matrix.platform == 'linux' }}
+      CI_BUILD_WHEEL: 1
       CI_BUILD_PYINSTALLER: 1
-      CI_BUILD_WININSTALLER: ${{ matrix.platform == 'windows' }}
+      CI_BUILD_WININSTALLER: 0
+      CI_BUILD_DOCKER: 1
       CI_BUILD_KEY: ${{ secrets.CI_BUILD_KEY }}
     steps:
       - uses: actions/checkout@v2
@@ -80,41 +42,9 @@ jobs:
           key: installbuilder
       - run: pip install -e .[dev]
       - run: python release/cibuild.py build
-      # artifacts must have different names, see https://github.com/actions/upload-artifact/issues/24
-      - uses: actions/upload-artifact@v2
-        with:
-          name: binaries.${{ matrix.platform }}
-          path: release/dist
+      - uses: docker/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480
+      - uses: docker/setup-buildx-action@b1f1f719c7cd5364be7c82e366366da322d01f7c
+      - run: python release/cibuild.py build_image
 
-
-#  # Separate from everything else because slow.
-#  build-and-deploy-docker:
-#    environment: deploy-docker
-#    needs:
-#      - build
-#    runs-on: ubuntu-latest
-#    env:
-#      CI_BUILD_DOCKER: 1
-#      DOCKER_USERNAME: lamnt19
-#      DOCKER_PASSWORD: pikachuA@
-#    steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          persist-credentials: false
-#      - uses: actions/setup-python@v2
-#        with:
-#          python-version: '3.9'
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: binaries.linux
-#          path: release/dist
-#      - uses: docker/setup-qemu-action@27d0a4f181a40b142cce983c5393082c365d1480
-#      - uses: docker/setup-buildx-action@b1f1f719c7cd5364be7c82e366366da322d01f7c
-#      - run: pip install -e .[dev]
-#      - run: python release/cibuild.py build
-#      - uses: actions/upload-artifact@v2
-#        with:
-#          name: mitmdump
-#          path: release/docker
 
 
