@@ -1,0 +1,40 @@
+
+const createUser =
+console.log(pm.variables.get("body"))
+console.log(pm.variables.get("status_code"))
+let a = pm.sendRequest({
+    url: "http://localhost:8088/intercept",
+    method: 'PUT',
+    header: {
+        'Content-type': 'application/json'
+    },
+    body: {
+        mode: 'application/json',
+        raw: pm.variables.replaceIn(JSON.stringify({
+            "name": "loan-packages",
+            "predicate": {
+                "method" : pm.variables.get("method"),
+                "url"    : pm.variables.get("url"),
+                "headers": pm.variables.get("headers"),
+                "params" : pm.variables.get("params")
+            },
+            "response": {
+                "action":pm.variables.get("action"),
+                "status_code": pm.variables.get("status_code"),
+                "body": pm.variables.get("body")
+            }
+        }))
+    }
+}, (error, response) => {
+  if (error) {
+    console.log(error);
+  }
+  pm.test('response should be okay to process', () => {
+    // console.log("response.json()");
+    // console.log(response.json());
+    pm.expect(error).to.equal(null);
+    pm.expect(response).to.have.property('code', 200);
+    pm.expect(response).to.have.property('status', 'OK');
+  });
+
+});
