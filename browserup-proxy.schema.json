@@ -513,6 +513,10 @@
       "VerifyResult": {
         "type": "object",
         "properties": {
+          "result": {
+            "type": "boolean",
+            "description": "Result True / False"
+          },
           "name": {
             "type": "string",
             "description": "Name"
@@ -520,10 +524,6 @@
           "type": {
             "type": "string",
             "description": "Type"
-          },
-          "result": {
-            "type": "boolean",
-            "description": "Result True / False"
           }
         },
         "required": [
@@ -562,6 +562,129 @@
           "name",
           "value"
         ]
+      },
+      "CustomHarData": {
+        "type": "object",
+        "minProperties": 1
+      },
+      "WebSocketMessage": {
+        "type": "object",
+        "required": [
+          "type",
+          "opcode",
+          "data",
+          "time"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "opcode": {
+            "type": "number"
+          },
+          "data": {
+            "type": "string"
+          },
+          "time": {
+            "type": "number"
+          }
+        }
+      },
+      "Har": {
+        "type": "object",
+        "required": [
+          "log"
+        ],
+        "properties": {
+          "log": {
+            "type": "object",
+            "externalDocs": {
+              "description": "HAR (HTTP Archive) Log Format",
+              "url": "http://www.softwareishard.com/blog/har-12-spec/"
+            },
+            "required": [
+              "version",
+              "creator",
+              "entries",
+              "pages"
+            ],
+            "properties": {
+              "version": {
+                "type": "string"
+              },
+              "creator": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "version"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                }
+              },
+              "browser": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "version"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                }
+              },
+              "pages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Page"
+                },
+                "default": []
+              },
+              "entries": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Entry"
+                }
+              },
+              "comment": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Header": {
+        "type": "object",
+        "required": [
+          "name",
+          "value"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
       },
       "Entry": {
         "type": "object",
@@ -1042,129 +1165,6 @@
             "type": "string"
           }
         }
-      },
-      "Header": {
-        "type": "object",
-        "required": [
-          "name",
-          "value"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          },
-          "comment": {
-            "type": "string"
-          }
-        }
-      },
-      "WebSocketMessage": {
-        "type": "object",
-        "required": [
-          "type",
-          "opcode",
-          "data",
-          "time"
-        ],
-        "properties": {
-          "type": {
-            "type": "string"
-          },
-          "opcode": {
-            "type": "number"
-          },
-          "data": {
-            "type": "string"
-          },
-          "time": {
-            "type": "number"
-          }
-        }
-      },
-      "Har": {
-        "type": "object",
-        "required": [
-          "log"
-        ],
-        "properties": {
-          "log": {
-            "type": "object",
-            "externalDocs": {
-              "description": "HAR (HTTP Archive) Log Format",
-              "url": "http://www.softwareishard.com/blog/har-12-spec/"
-            },
-            "required": [
-              "version",
-              "creator",
-              "entries",
-              "pages"
-            ],
-            "properties": {
-              "version": {
-                "type": "string"
-              },
-              "creator": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "version"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "version": {
-                    "type": "string"
-                  },
-                  "comment": {
-                    "type": "string"
-                  }
-                }
-              },
-              "browser": {
-                "type": "object",
-                "required": [
-                  "name",
-                  "version"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "version": {
-                    "type": "string"
-                  },
-                  "comment": {
-                    "type": "string"
-                  }
-                }
-              },
-              "pages": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Page"
-                },
-                "default": []
-              },
-              "entries": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Entry"
-                }
-              },
-              "comment": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      },
-      "CustomHarData": {
-        "type": "object",
-        "minProperties": 1
       }
     }
   }

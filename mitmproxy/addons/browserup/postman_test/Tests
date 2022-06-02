@@ -1,0 +1,16 @@
+pm.test("Data-Driven-Test", function(){
+    pm.response.to.have.status(pm.variables.get("status_code"));
+    // in ra data trong file
+    // console.log("---status_code---");
+    // console.log(pm.variables.get("status_code"));
+    console.log("---body---");
+    console.log(pm.variables.get("body"));
+    console.log("---expected---");
+    console.log(pm.variables.get("expected"));
+ // in ra data trong response
+    console.log("---pm.response.json()---");
+    console.log(pm.response.json());
+
+ // So sánh body của response trả về vói expected trong file
+    pm.response.to.have.body(pm.variables.get("expected"));
+ });

@@ -1,0 +1,896 @@
+[
+{
+	   "method":"",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"GET",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"SET",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"GET|PUT|POST",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"SET|GET|POST",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   
+   
+   {
+	   "method":"",
+	   "url":"",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"api/logout",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"home$",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"^login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   
+   
+   
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"json",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"json",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"text",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"text",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"application/json",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"^application\/json$",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"application/json",
+	   "sendby":"postman",
+	   "headers":{
+	   	"Content-Type":"^application\/json$",
+	   	"sendby":"postman"
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   
+   
+   {
+	   "method":"",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"application/json",
+	   "sendby":"postman",
+	   "headers":{
+	   	"Content-Type":"^application\/json$",
+	   	"sendby":"postman"
+	   },
+	   "welcome": "",
+	   "return" : "",
+	   "params":{
+	   	"welcome": "",
+	   	"return" : ""
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"application/json",
+	   "sendby":"postman",
+	   "headers":{
+	   	"Content-Type":"^application\/json$",
+	   	"sendby":"postman"
+	   },
+	   "return" : "",
+	   "welcome": true,
+	   "params":{
+	   	"return" : "",
+	   	"welcome": true
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"application/json",
+	   "sendby":"postman",
+	   "headers":{
+	   	"Content-Type":"^application\/json$",
+	   	"sendby":"postman"
+	   },
+	   "return" : "",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"application/json",
+	   "sendby":"postman",
+	   "headers":{
+	   	"Content-Type":"^application\/json$",
+	   	"sendby":"postman"
+	   },
+	   "welcome": "true",
+	   "return": "home",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+	   
+   },
+   
+   
+{
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"ABC",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"STUB",
+      "status_code":201,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "token":"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "token":"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"STUB",
+      "status_code":201,
+      "body":"{'error':'1','message':'abc','trackingId':'{{remove}}', 'token': '','number': {'a1': 'a11','a2' : 'a22'}}",
+      "expected":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "token":"",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"STUB",
+      "status_code":201,
+      "body":1,
+      "expected":1,
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"REPLACE",
+      "status_code":201,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "token":"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "token":"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"REPLACE",
+      "status_code":201,
+      "body":"{'error':'1','message':'abc','trackingId':'{{remove}}', 'token': '','number': {'a1': 'a11','a2' : 'a22'}}",
+      "expected":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "token":"",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"REPLACE",
+      "status_code":201,
+      "body":1,
+      "expected":1,
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"PATCH",
+      "status_code":201,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "updatedAt" :"{{remove}}",
+         "token":"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "error":"1",
+         "message":"abc",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"PATCH",
+      "status_code":201,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "trackingId":"{{remove}}",
+         "updatedAt" :"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "error":"1",
+         "message":"abc",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"PATCH",
+      "status_code":201,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "token":"add new key",
+         "updatedAt" :"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "token":"add new key",
+         "error":"1",
+         "message":"abc",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"PATCH",
+      "status_code":201,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "token":"modify key",
+         "updatedAt" :"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "token":"modify key",
+         "error":"1",
+         "message":"abc",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"PATCH",
+      "status_code":201,
+      "body":"{'error':'1','message':'abc','trackingId':'{{remove}}', 'token': '','number': {'a1': 'a11','a2' : 'a22'}}",
+      "expected":"",
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   {
+      "method":"PUT",
+      "url":"api/login",
+      "action":"PATCH",
+      "status_code":20,
+      "body":{
+         "error":"1",
+         "message":"abc",
+         "token":"modify key",
+         "updatedAt" :"{{remove}}",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "expected":{
+         "token":"modify key",
+         "error":"1",
+         "message":"abc",
+         "number":{
+            "a1":"a11",
+            "a2":"a22"
+         }
+      },
+      "Content-Type":"",
+      "sendby":"",
+      "headers":{
+	  "Content-Type":"",
+	  "sendby":""
+	   },
+      "return" : "home",
+      "welcome": "true",
+      "params":{
+	   "return" : "home",
+	   "welcome": "true"
+	   }
+   },
+   
+   {
+	   "method":"PUT",
+	   "url":"api/login",
+	   "action":"STUB",
+	   "status_code":201,
+	   "body":"{'message':'1'}",
+	   "expected":{
+	      "message":"1"
+	   },
+	   "Content-Type":"",
+	   "sendby":"",
+	   "headers":{
+	   	"Content-Type":"",
+	   	"sendby":""
+	   },
+	   "return" : "home",
+	   "welcome": "true",
+	   "params":{
+	   	"return" : "home",
+	   	"welcome": "true"
+	   }
+   }
+]

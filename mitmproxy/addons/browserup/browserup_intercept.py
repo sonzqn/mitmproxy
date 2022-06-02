@@ -1,5 +1,4 @@
 """Intercept HTTP request"""
-import copy
 import json
 import re
 
@@ -16,13 +15,31 @@ class MyStubs:
         intercept = MyStubs.get_intercept(flow)
         if intercept:
             intercept_response = intercept.get("response")
+            return_type = intercept_response.get("return_type", None)
             if intercept_response:
                 if intercept_response.get("action").upper() == "STUB":
                     ctx.log.info("============ Process stub response ============")
+                    stub_body = intercept_response.get("body")
+                    # khai báo thằng stub content type là kiểu text
+                    # stub_content_type = "text/html"
+
+                    if type(stub_body) is str:
+                        x = stub_body.replace("'", '"')
+                        stub_body = json.loads(x)
+
+                    if type(stub_body) is dict:
+                        stub_body = json.dumps(stub_body)
+
+                        # sort response
+                        MyStubs.sort_response_by_key(stub_body)
+                        MyStubs.sort_response_by_value(stub_body)
+
+                        # stub_content_type = "application/json; charset=utf-8"
+                    stub_content_type = "application/json; charset=utf-8"
                     flow.response = http.Response.make(
                         intercept_response.get("status_code"),  # (optional) status code
-                        intercept_response.get("body").encode('utf-8'),  # (optional) content
-                        {"Content-Type": "text/html"}  # (optional) headers
+                        stub_body.encode('utf-8'),  # (optional) content
+                        {"Content-Type": stub_content_type}  # (optional) headers
                     )
                 else:
                     flow.request.headers["intercept_key"] = intercept.get("key")
@@ -32,6 +49,7 @@ class MyStubs:
         if intercept_key:
             intercept = MyStubs.intercepts.get(intercept_key)
             intercept_response = intercept.get("response")
+
             if intercept_response:
                 ctx.log.info("============ Process modify response ============")
                 status_code = intercept_response.get("status_code", None)
@@ -39,16 +57,19 @@ class MyStubs:
                     ctx.log.info("Change status code from {} to {}".format(flow.response.status_code, status_code))
                     flow.response.status_code = status_code
                 body = intercept_response.get("body", None)
+
                 if body:
                     if intercept_response.get("action").upper() == "PATCH":
                         try:
                             src = json.loads(flow.response.content)
+                            if type(src) is str:
+                                x = src.replace("'", '"')
+                                src = json.loads(x)
                             if type(src) is dict:
-                                patch = copy.deepcopy(body)
-                                MyStubs.patch_json_object(src, patch)
+                                MyStubs.patch_json_object(src, body)
                                 ctx.log.info("@Original response content:")
                                 ctx.log.info(flow.response.content)
-                                flow.response.content = json.dumps(patch).encode('utf-8')
+                                flow.response.content = json.dumps(src).encode('utf-8')
                                 ctx.log.info("@Patched response content:")
                                 ctx.log.info(flow.response.content)
                         except ValueError as err:
@@ -56,6 +77,9 @@ class MyStubs:
                     else:
                         ctx.log.error(type(body))
                         ctx.log.error(body)
+                        if type(body) is str:
+                            x = body.replace("'", '"')
+                            body = json.loads(x)
                         if type(body) is dict:
                             ctx.log.info("@Original response content:")
                             ctx.log.info(flow.response.content)
@@ -81,6 +105,8 @@ class MyStubs:
 
     @staticmethod
     def is_match(flow, predicate):
+        if re.search("intercept$", flow.request.pretty_url) is not None:
+            return False
         method = predicate.get("method", None)
         url = predicate.get("url", None)
         headers = predicate.get("headers", None)
@@ -103,7 +129,7 @@ class MyStubs:
                 if value is None:
                     return False
                 matcher_value = headers.get(key)
-                if re.search(value, matcher_value) is None:
+                if re.search(matcher_value, value) is None:
                     return False
         if params:
             for key in params:
@@ -111,7 +137,7 @@ class MyStubs:
                 if value is None:
                     return False
                 matcher_value = params.get(key)
-                if re.search(value, matcher_value) is None:
+                if re.search(matcher_value, value) is None:
                     return False
         if body:
             if re.search(flow.request.content, body) is None:
@@ -120,14 +146,49 @@ class MyStubs:
 
     @staticmethod
     def patch_json_object(src: dict, patch: dict):
-        for key in src:
+        for key in patch:
+            # lấy giá trị của src
             src_value = src.get(key)
             patch_value = patch.get(key, None)
             # ctx.log.error("The key and value are ({}) = ({}) | type: {}".format(key, src_value, type(src_value)))
             # ctx.log.error("Path value: {}".format(patch_value))
-            if patch_value is None:
-                patch[key] = src_value
+            #
+            # patch có giá trị thì sẽ vá ko quan tâm đến src
+            if patch_value is not None and patch_value != "{{remove}}":
+                src[key] = patch_value
+            #
             elif type(patch_value) is type(src_value) and type(patch_value) is dict:
                 MyStubs.patch_json_object(src_value, patch_value)
-            elif patch_value == "{{remove}}":
-                del patch[key]
+            #
+            # src không có, pacth bằng remove thì xóa path và không trả về giá trị này
+            elif src_value is not None and patch_value == "{{remove}}":
+                del src[key]
+
+
+    @staticmethod
+    def sort_response_by_key(stub_body: dict):
+        x = json.loads(stub_body)
+        print(sorted(x.items()))
+
+    @staticmethod
+    def sort_response_by_value(stub_body: dict):
+        x = json.loads(stub_body)
+        print(type(x))
+
+        # sort theo value tang dan trong trường hợp không phải là nested dict
+        # Sử dụng vòng lặp
+        # sorted_values = sorted(x.values())
+        # sorted_x = {}
+        # for i in sorted_values:
+        #     for k in x.keys():
+        #         if x[k] == i:
+        #             sorted_x[k] = x[k]
+        #             break
+        # print(sorted_x)
+
+        # Sử dụng function sorted
+        # sorted_x = {}
+        # sorted_keys = sorted(x, key=x.get)
+        # for w in sorted_keys:
+        #     sorted_x[w] = x[w]
+        # print(sorted_x)

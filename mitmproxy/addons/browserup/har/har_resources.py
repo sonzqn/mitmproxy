@@ -7,6 +7,7 @@ from pathlib import Path
 import falcon
 from marshmallow import ValidationError
 
+from mitmproxy import ctx
 from mitmproxy.addons.browserup.browserup_intercept import MyStubs
 from mitmproxy.addons.browserup.har.har_capture_types import HarCaptureTypes
 from mitmproxy.addons.browserup.har.har_schemas import ErrorSchema, CounterSchema, MatchCriteriaSchema
@@ -557,24 +558,46 @@ class InterceptResource:
         name = request_body.get("name", None)
         predicate = request_body.get("predicate", None)
         response = request_body.get('response', None)
-
+        response_body = response.get("body", None)
         # ctx.log.error(json.dumps(predicate))
         # ctx.log.error(json.dumps(response))
         errors = []
+        if type(response_body) is not dict and type(response_body) is not str:
+            errors.append("Response body type is not support, please use [dict | str]")
+
         if name is None:
             errors.append("'name' is required")
         if predicate is None:
             errors.append("'predicate' is required")
         else:
+            print(predicate)
             if type(predicate) is dict:
                 method = predicate.get("method", None)
                 url = predicate.get("url", None)
                 headers = predicate.get("headers", None)
                 params = predicate.get("params", None)
                 body = predicate.get("body", None)
+                if method:
+                    if type(method) is str:
+                        valid_method = ["POST", "GET", "HEAD", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"]
+                        ms = method.replace(" ", "").split("|")
+                        for m in ms:
+                            # if m is not None and method != "POST" and method != "PUT" and method != "GET":
+                            if m.upper() not in valid_method:
+                                errors.append(
+                                    "method {} is not support, please use one of {}".format(m, valid_method))
+                    else:
+                        errors.append("method must be a string")
+
                 if method is None and url is None and headers is None and params is None and body is None:
                     errors.append(
                         "predicates need at least one of ['method', 'url', 'headers', 'params', 'body'] matcher")
+
+                #     Báo lỗi nếu không có url
+                if url is None:
+                        errors.append(
+                            "predicates need a 'url' matcher")
+
                 predicate_keys = ["method", "url", "headers", "params", "body"]
                 for key in predicate:
                     if key not in predicate_keys:
@@ -610,11 +633,12 @@ class InterceptResource:
                 elif status_code is None:
                     errors.append("response require at least ['status_code'] modifier")
 
-                response_keys = ["action", "status_code", "body"]
+                response_keys = ["action", "status_code", "body", "return_type"]
+
                 for key in response:
                     if key not in response_keys:
                         errors.append(
-                            "'{}' key is not support, please use one of ['action', 'status_code', 'body'] key".format(
+                            "'{}' key is not support, please use one of ['action', 'status_code', 'body', 'return_type'] key".format(
                                 key))
 
             else:
